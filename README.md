@@ -9,6 +9,7 @@ This add-on will help you design cabinet furniture (and not only) in a blender a
 ## 🌏 How you can use:
  - [YOUTUBE](https://youtu.be/attv0Kb1ULw?t=216)
  - [BLENDERMARKET](https://blendermarket.com/products/procutter-10)
+ - [GUMROAD](https://lanneq.gumroad.com/l/bKYFC?_ga=2.206669011.1381922613.1631300662-1483452706.1629450052)
 
 ## 🛠 What I use in this project:
 > ### FOR BACKEND:
