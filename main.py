@@ -272,9 +272,6 @@ def astra():
 
     path = bpy.context.scene.my_tool.save_path
     
-#    new_path = "C:\Users\lanneq\Documents\Astra R-Nesting\DataEx\"
-#    os.makedirs(path, exist_ok=True)
-#    with open(path + "astra.txt", "w") as file:
     os.makedirs(path, exist_ok=True)
     with open(path + "astra.txt", "w") as file:
         file.write(result)
@@ -285,7 +282,7 @@ def exceptions():
         try:
             pass
         except(TypeError):
-            print("Type Errrrror")
+            print("Type Error")
 
 
 def opticutter():
@@ -691,7 +688,6 @@ class Astra(bpy.types.Operator):
         self.report({'INFO'}, f"This is {self.bl_idname}")
         return {'FINISHED'}
 
-
 class OptiCutter(bpy.types.Operator):
     bl_idname = "opticutter.func"
     bl_label = "Exporter_Astra"
@@ -702,17 +698,10 @@ class OptiCutter(bpy.types.Operator):
         self.report({'INFO'}, f"This is {self.bl_idname}")
         return {'FINISHED'}
 
-
-
-
-
-
-
 def rename_all():
     selection = bpy.context.selected_objects
     for sel in selection:
         sel.name = bpy.context.scene.rename_all.rename_sel
-
 
 class RenameSel(bpy.types.Operator):
     bl_idname = "rename_all.func"
@@ -723,9 +712,6 @@ class RenameSel(bpy.types.Operator):
         rename_all()
         self.report({'INFO'}, f"This is {self.bl_idname}")
         return {'FINISHED'}
-
-
-
 
 class MyProperties(bpy.types.PropertyGroup):
     astra_path : bpy.props.StringProperty(name="Astra path:", default="C:\Program Files (x86)\Astra R-Nesting\Astra.exe")
@@ -754,8 +740,6 @@ class IV_Preferences(bpy.types.AddonPreferences):
 
         row = layout.row()
         row.label(text="DATA ORDER PRIORITY: Rotate | Quantity | Material | Name | Thickness | Length | Width ")
-
-
 
 class EXAMPLE_PT_panel(bpy.types.Panel):
     bl_label = "ProCutter"
@@ -786,12 +770,8 @@ class EXAMPLE_PT_panel(bpy.types.Panel):
         row.operator(Hide_Name.bl_idname, text='Hide names', icon='HIDE_ON')
         row.operator(Show_Name.bl_idname, text='Show names', icon='HIDE_OFF')
  
-
-
-
         row = layout.row()
    
-
         try:
             row.label(text="Change Material for Selected")
             row = layout.row()
