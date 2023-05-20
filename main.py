@@ -1,33 +1,27 @@
-# ##### BEGIN MIT LICENSE BLOCK #####
+# ##### BEGIN GPL LICENSE BLOCK #####
 #
-# Copyright (c) 2023 lanneq-dev
-# 
-# Permission is hereby granted, free of charge, to any person obtaining a copy
-# of this software and associated documentation files (the "Software"), to deal
-# in the Software without restriction, including without limitation the rights
-# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-# copies of the Software, and to permit persons to whom the Software is
-# furnished to do so, subject to the following conditions:
-# 
-# The above copyright notice and this permission notice shall be included in all
-# copies or substantial portions of the Software.
-# 
-# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-# SOFTWARE.
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of the GNU General Public License
+#  as published by the Free Software Foundation; either version 2
+#  of the License, or (at your option) any later version.
 #
-# ##### END MIT LICENSE BLOCK #####
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#
+#  You should have received a copy of the GNU General Public License
+#  along with this program; if not, write to the Free Software Foundation,
+#  Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+#
+# ##### END GPL LICENSE BLOCK #####
 
 
 bl_info = {
     "name": "ProCutter",
-    "author": "Ruslan Nurgaleev / Lanneq-dev",
-    "version": (1, 0, 2),
-    "blender": (2, 93, 0),
+    "author": "Ruslan Nurgaleev / Lanneq",
+    "version": (1, 0, 4),
+    "blender": (3, 5, 1),
     "location": "View 3D > Tool Shelf > ProCutter",
     "description": "ProCutter is intended for optimizing rectangular nesting.",
     "warning": "Work with Astra R-Nesting and optiCutter",
@@ -48,6 +42,7 @@ def astra():
     def console_get():
         for area in bpy.context.screen.areas:
             if area.type == 'CONSOLE':
+
                 for space in area.spaces:
                     if space.type == 'CONSOLE':
                         return area, space
@@ -110,172 +105,176 @@ def astra():
                 Y and X >= min_detail_size and Z >= min_detail_size) or (
                                     Z and X >= min_detail_size and Y >= min_detail_size)):
             if (match1 != None) and (match2 != None):
-                result += "0; 1; " + mat_type + "%s; %s; %.0f; %.0f; %.0f\n" % (mat_name, obj_name, X, Y, Z)
+                result += "0;1;" + mat_type + "%s;%s;%.0f;%.0f;%.0f\n" % (mat_name, obj_name, X, Y, Z)
                 count += 1
                 continue
             if match2 != None:
-                result += "0; 1; " + mat_type + "%s; %s; %.0f; %.0f; %.0f\n" % (mat_name, obj_name, X, Z, Y)
+                result += "0;1;" + mat_type + "%s;%s;%.0f;%.0f;%.0f\n" % (mat_name, obj_name, X, Z, Y)
                 count += 1
             else:
                 if match1 != None:
-                    result += "1; 1; " + mat_type + "%s; %s; %.0f; %.0f; %.0f\n" % (mat_name, obj_name, X, Y, Z)
+                    result += "1;1;" + mat_type + "%s;%s;%.0f;%.0f;%.0f\n" % (mat_name, obj_name, X, Y, Z)
                     count += 1
                     continue
-                result += "1; 1; " + mat_type + "%s; %s; %.0f; %.0f; %.0f\n" % (mat_name, obj_name, X, Z, Y)
+                result += "1;1;" + mat_type + "%s;%s;%.0f;%.0f;%.0f\n" % (mat_name, obj_name, X, Z, Y)
                 count += 1
 
         if (X < Z < Y) and ((X and Y >= min_detail_size and Z >= min_detail_size) or (
                 Y and X >= min_detail_size and Z >= min_detail_size) or (
                                     Z and X >= min_detail_size and Y >= min_detail_size)):
             if (match1 != None) and (match2 != None):
-                result += "0; 1; " + mat_type + "%s; %s; %.0f; %.0f; %.0f\n" % (mat_name, obj_name, X, Z, Y)
+                result += "0; 1;" + mat_type + "%s;%s;%.0f;%.0f;%.0f\n" % (mat_name, obj_name, X, Z, Y)
                 count += 1
                 continue
             if match2 != None:
-                result += "0; 1; " + mat_type + "%s; %s; %.0f; %.0f; %.0f\n" % (mat_name, obj_name, X, Y, Z)
+                result += "0;1;" + mat_type + "%s;%s;%.0f;%.0f;%.0f\n" % (mat_name, obj_name, X, Y, Z)
                 count += 1
             else:
                 if match1 != None:
-                    result += "1; 1; " + mat_type + "%s; %s; %.0f; %.0f; %.0f\n" % (mat_name, obj_name, X, Z, Y)
+                    result += "1;1;" + mat_type + "%s;%s;%.0f;%.0f;%.0f\n" % (mat_name, obj_name, X, Z, Y)
                     count += 1
                     continue
-                result += "1; 1; " + mat_type + "%s; %s; %.0f; %.0f; %.0f\n" % (mat_name, obj_name, X, Y, Z)
+                result += "1;1;" + mat_type + "%s;%s;%.0f;%.0f;%.0f\n" % (mat_name, obj_name, X, Y, Z)
                 count += 1
 
         if (X < Z == Y) and ((X and Y >= min_detail_size and Z >= min_detail_size) or (
                 Y and X >= min_detail_size and Z >= min_detail_size) or (
                                      Z and X >= min_detail_size and Y >= min_detail_size)):
             if (match1 != None) and (match2 != None):
-                result += "0; 1; " + mat_type + "%s; %s; %.0f; %.0f; %.0f\n" % (mat_name, obj_name, X, Y, Z)
+                result += "0;1;" + mat_type + "%s;%s;%.0f;%.0f;%.0f\n" % (mat_name, obj_name, X, Y, Z)
                 count += 1
                 continue
             if match2 != None:
-                result += "0; 1; " + mat_type + "%s; %s; %.0f; %.0f; %.0f\n" % (mat_name, obj_name, X, Y, Z)
+                result += "0;1; " + mat_type + "%s;%s;%.0f;%.0f;%.0f\n" % (mat_name, obj_name, X, Y, Z)
                 count += 1
             else:
                 if match1 != None:
-                    result += "1; 1; " + mat_type + "%s; %s; %.0f; %.0f; %.0f\n" % (mat_name, obj_name, X, Y, Z)
+                    result += "1;1;" + mat_type + "%s;%s;%.0f;%.0f;%.0f\n" % (mat_name, obj_name, X, Y, Z)
                     count += 1
                     continue
-                result += "1; 1; " + mat_type + "%s; %s; %.0f; %.0f; %.0f\n" % (mat_name, obj_name, X, Y, Z)
+                result += "1;1;" + mat_type + "%s;%s;%.0f;%.0f;%.0f\n" % (mat_name, obj_name, X, Y, Z)
                 count += 1
 
         if (Y < X < Z) and ((X and Y >= min_detail_size and Z >= min_detail_size) or (
                 Y and X >= min_detail_size and Z >= min_detail_size) or (
                                     Z and X >= min_detail_size and Y >= min_detail_size)):
             if (match1 != None) and (match2 != None):
-                result += "0; 1; " + mat_type + "%s; %s; %.0f; %.0f; %.0f\n" % (mat_name, obj_name, Y, X, Z)
+                result += "0;1;" + mat_type + "%s;%s;%.0f;%.0f;%.0f\n" % (mat_name, obj_name, Y, X, Z)
                 count += 1
                 continue
             if match2 != None:
-                result += "0; 1; " + mat_type + "%s; %s; %.0f; %.0f; %.0f\n" % (mat_name, obj_name, Y, Z, X)
+                result += "0;1;" + mat_type + "%s;%s;%.0f;%.0f;%.0f\n" % (mat_name, obj_name, Y, Z, X)
                 count += 1
             else:
                 if match1 != None:
-                    result += "1; 1; " + mat_type + "%s; %s; %.0f; %.0f; %.0f\n" % (mat_name, obj_name, Y, X, Z)
+                    result += "1;1; " + mat_type + "%s;%s;%.0f;%.0f;%.0f\n" % (mat_name, obj_name, Y, X, Z)
                     count += 1
                     continue
-                result += "1; 1; " + mat_type + "%s; %s; %.0f; %.0f; %.0f\n" % (mat_name, obj_name, Y, Z, X)
+                result += "1;1; " + mat_type + "%s;%s;%.0f;%.0f;%.0f\n" % (mat_name, obj_name, Y, Z, X)
                 count += 1
 
         if (Y < Z < X) and ((X and Y >= min_detail_size and Z >= min_detail_size) or (
                 Y and X >= min_detail_size and Z >= min_detail_size) or (
                                     Z and X >= min_detail_size and Y >= min_detail_size)):
             if (match1 != None) and (match2 != None):
-                result += "0; 1; " + mat_type + "%s; %s; %.0f; %.0f; %.0f\n" % (mat_name, obj_name, Y, Z, X)
+                result += "0;1;" + mat_type + "%s;%s;%.0f;%.0f;%.0f\n" % (mat_name, obj_name, Y, Z, X)
                 count += 1
                 continue
             if match2 != None:
-                result += "0; 1; " + mat_type + "%s; %s; %.0f; %.0f; %.0f\n" % (mat_name, obj_name, Y, X, Z)
+                result += "0;1;" + mat_type + "%s;%s;%.0f;%.0f;%.0f\n" % (mat_name, obj_name, Y, X, Z)
                 count += 1
             else:
                 if match1 != None:
-                    result += "1; 1; " + mat_type + "%s; %s; %.0f; %.0f; %.0f\n" % (mat_name, obj_name, Y, Z, X)
+                    result += "1;1;" + mat_type + "%s;%s;%.0f;%.0f;%.0f\n" % (mat_name, obj_name, Y, Z, X)
                     count += 1
                     continue
-                result += "1; 1; " + mat_type + "%s; %s; %.0f; %.0f; %.0f\n" % (mat_name, obj_name, Y, X, Z)
+                result += "1;1;" + mat_type + "%s;%s;%.0f;%.0f;%.0f\n" % (mat_name, obj_name, Y, X, Z)
                 count += 1
 
         if (Y < Z == X) and ((X and Y >= min_detail_size and Z >= min_detail_size) or (
                 Y and X >= min_detail_size and Z >= min_detail_size) or (
                                      Z and X >= min_detail_size and Y >= min_detail_size)):
             if (match1 != None) and (match2 != None):
-                result += "0; 1; " + mat_type + "%s; %s; %.0f; %.0f; %.0f\n" % (mat_name, obj_name, Y, X, Z)
+                result += "0;1;" + mat_type + "%s;%s;%.0f;%.0f;%.0f\n" % (mat_name, obj_name, Y, X, Z)
                 count += 1
                 continue
             if match2 != None:
-                result += "0; 1; " + mat_type + "%s; %s; %.0f; %.0f; %.0f\n" % (mat_name, obj_name, Y, X, Z)
+                result += "0;1;" + mat_type + "%s;%s;%.0f;%.0f;%.0f\n" % (mat_name, obj_name, Y, X, Z)
                 count += 1
             else:
                 if match1 != None:
-                    result += "1; 1; " + mat_type + "%s; %s; %.0f; %.0f; %.0f\n" % (mat_name, obj_name, Y, X, Z)
+                    result += "1;1;" + mat_type + "%s;%s;%.0f;%.0f;%.0f\n" % (mat_name, obj_name, Y, X, Z)
                     count += 1
                     continue
-                result += "1; 1; " + mat_type + "%s; %s; %.0f; %.0f; %.0f\n" % (mat_name, obj_name, Y, X, Z)
+                result += "1;1; " + mat_type + "%s;%s;%.0f;%.0f;%.0f\n" % (mat_name, obj_name, Y, X, Z)
                 count += 1
 
         if (Z < X < Y) and ((X and Y >= min_detail_size and Z >= min_detail_size) or (
                 Y and X >= min_detail_size and Z >= min_detail_size) or (
                                     Z and X >= min_detail_size and Y >= min_detail_size)):
             if (match1 != None) and (match2 != None):
-                result += "0; 1; " + mat_type + "%s; %s; %.0f; %.0f; %.0f\n" % (mat_name, obj_name, Z, X, Y)
+                result += "0;1;" + mat_type + "%s; %s; %.0f; %.0f;%.0f\n" % (mat_name, obj_name, Z, X, Y)
                 count += 1
                 continue
             if match2 != None:
-                result += "0; 1; " + mat_type + "%s; %s; %.0f; %.0f; %.0f\n" % (mat_name, obj_name, Z, Y, X)
+                result += "0;1;" + mat_type + "%s;%s;%.0f;%.0f;%.0f\n" % (mat_name, obj_name, Z, Y, X)
                 count += 1
             else:
                 if match1 != None:
-                    result += "1; 1; " + mat_type + "%s; %s; %.0f; %.0f; %.0f\n" % (mat_name, obj_name, Z, X, Y)
+                    result += "1;1;" + mat_type + "%s;%s;%.0f;%.0f;%.0f\n" % (mat_name, obj_name, Z, X, Y)
                     count += 1
                     continue
-                result += "1; 1; " + mat_type + "%s; %s; %.0f; %.0f; %.0f\n" % (mat_name, obj_name, Z, Y, X)
+                result += "1;1;" + mat_type + "%s;%s;%.0f;%.0f;%.0f\n" % (mat_name, obj_name, Z, Y, X)
                 count += 1
 
         if (Z < Y < X) and ((X and Y >= min_detail_size and Z >= min_detail_size) or (
                 Y and X >= min_detail_size and Z >= min_detail_size) or (
                                     Z and X >= min_detail_size and Y >= min_detail_size)):
             if (match1 != None) and (match2 != None):
-                result += "0; 1; " + mat_type + "%s; %s; %.0f; %.0f; %.0f\n" % (mat_name, obj_name, Z, Y, X)
+                result += "0;1;" + mat_type + "%s;%s;%.0f;%.0f;%.0f\n" % (mat_name, obj_name, Z, Y, X)
                 count += 1
                 continue
             if match2 != None:
-                result += "0; 1; " + mat_type + "%s; %s; %.0f; %.0f; %.0f\n" % (mat_name, obj_name, Z, X, Y)
+                result += "0;1;" + mat_type + "%s;%s;%.0f;%.0f;%.0f\n" % (mat_name, obj_name, Z, X, Y)
                 count += 1
             else:
                 if match1 != None:
-                    result += "1; 1; " + mat_type + "%s; %s; %.0f; %.0f; %.0f\n" % (mat_name, obj_name, Z, Y, X)
+                    result += "1;1;" + mat_type + "%s;%s;%.0f;%.0f;%.0f\n" % (mat_name, obj_name, Z, Y, X)
                     count += 1
                     continue
-                result += "1; 1; " + mat_type + "%s; %s; %.0f; %.0f; %.0f\n" % (mat_name, obj_name, Z, X, Y)
+                result += "1;1;" + mat_type + "%s;%s;%.0f;%.0f;%.0f\n" % (mat_name, obj_name, Z, X, Y)
                 count += 1
 
         if (Z < Y == X) and ((X and Y >= min_detail_size and Z >= min_detail_size) or (
                 Y and X >= min_detail_size and Z >= min_detail_size) or (
                                      Z and X >= min_detail_size and Y >= min_detail_size)):
             if (match1 != None) and (match2 != None):
-                result += "0; 1; " + mat_type + "%s; %s; %.0f; %.0f; %.0f\n" % (mat_name, obj_name, Z, X, Y)
+                result += "0;1;" + mat_type + "%s;%s;%.0f;%.0f;%.0f\n" % (mat_name, obj_name, Z, X, Y)
                 count += 1
                 continue
             if match2 != None:
-                result += "0; 1; " + mat_type + "%s; %s; %.0f; %.0f; %.0f\n" % (mat_name, obj_name, Z, X, Y)
+                result += "0;1;" + mat_type + "%s;%s;%.0f;%.0f;%.0f\n" % (mat_name, obj_name, Z, X, Y)
                 count += 1
             else:
                 if match1 != None:
-                    result += "1; 1; " + mat_type + "%s; %s; %.0f; %.0f; %.0f\n" % (mat_name, obj_name, Z, X, Y)
+                    result += "1;1; " + mat_type + "%s;%s;%.0f;%.0f;%.0f\n" % (mat_name, obj_name, Z, X, Y)
                     count += 1
                     continue
-                result += "1; 1; " + mat_type + "%s; %s; %.0f; %.0f; %.0f\n" % (mat_name, obj_name, Z, X, Y)
+                result += "1;1;" + mat_type + "%s;%s;%.0f;%.0f;%.0f\n" % (mat_name, obj_name, Z, X, Y)
                 count += 1
 
         if (Z == Y == X):
-            result += "1; 1; " + mat_type + "%s; %s; %.0f; %.0f; %.0f\n" % (mat_name, obj_name, Z, X, Y)
+            result += "1;1;" + mat_type + "%s;%s;%.0f;%.0f;%.0f\n" % (mat_name, obj_name, Z, X, Y)
             count += 1
 
     console_write(result)
     os.startfile(bpy.context.scene.my_tool.astra_path)
 
     path = bpy.context.scene.my_tool.save_path
+    
+#    new_path = "C:\Users\lanneq\Documents\Astra R-Nesting\DataEx\"
+#    os.makedirs(path, exist_ok=True)
+#    with open(path + "astra.txt", "w") as file:
     os.makedirs(path, exist_ok=True)
     with open(path + "astra.txt", "w") as file:
         file.write(result)
@@ -354,164 +353,164 @@ def opticutter():
                 Y and X >= min_detail_size and Z >= min_detail_size) or (
                                     Z and X >= min_detail_size and Y >= min_detail_size)):
             if (match1 != None) and (match2 != None):
-                go += "P," + "%.0f, %.0f,1, %s" % (Y, Z, obj_name) + ",\n"
+                go += "P," + "%.0f,%.0f,1,%s" % (Y, Z, obj_name) + ",\n"
                 count += 1
                 continue
             if match2 != None:
-                go += "P," + "%.0f, %.0f,1, %s" % (Z, Y, obj_name) + ",\n"
+                go += "P," + "%.0f,%.0f,1,%s" % (Z, Y, obj_name) + ",\n"
                 count += 1
             else:
                 if match1 != None:
-                    go += "P," + "%.0f, %.0f,1, %s" % (Y, Z, obj_name) + ",y\n"
+                    go += "P," + "%.0f,%.0f,1,%s" % (Y, Z, obj_name) + ",y\n"
                     count += 1
                     continue
-                go += "P," + "%.0f, %.0f,1, %s" % (Z, Y, obj_name) + ",y\n"
+                go += "P," + "%.0f,%.0f,1,%s" % (Z, Y, obj_name) + ",y\n"
                 count += 1
 
         if (X < Z < Y) and ((X and Y >= min_detail_size and Z >= min_detail_size) or (
                 Y and X >= min_detail_size and Z >= min_detail_size) or (
                                     Z and X >= min_detail_size and Y >= min_detail_size)):
             if (match1 != None) and (match2 != None):
-                go += "P," + "%.0f, %.0f,1, %s" % (Z, Y, obj_name) + ",\n"
+                go += "P," + "%.0f,%.0f,1,%s" % (Z, Y, obj_name) + ",\n"
                 count += 1
                 continue
             if match2 != None:
-                go += "P," + "%.0f, %.0f,1, %s" % (Y, Z, obj_name) + ",\n"
+                go += "P," + "%.0f,%.0f,1,%s" % (Y, Z, obj_name) + ",\n"
                 count += 1
             else:
                 if match1 != None:
-                    go += "P," + "%.0f, %.0f,1, %s" % (Z, Y, obj_name) + ",y\n"
+                    go += "P," + "%.0f,%.0f,1,%s" % (Z, Y, obj_name) + ",y\n"
                     count += 1
                     continue
-                go += "P," + "%.0f, %.0f,1, %s" % (Y, Z, obj_name) + ",y\n"
+                go += "P," + "%.0f,%.0f,1,%s" % (Y, Z, obj_name) + ",y\n"
                 count += 1
 
         if (X < Z == Y) and ((X and Y >= min_detail_size and Z >= min_detail_size) or (
                 Y and X >= min_detail_size and Z >= min_detail_size) or (
                                      Z and X >= min_detail_size and Y >= min_detail_size)):
             if (match1 != None) and (match2 != None):
-                go += "P," + "%.0f, %.0f,1, %s" % (Y, Z, obj_name) + ",\n"
+                go += "P," + "%.0f,%.0f,1,%s" % (Y, Z, obj_name) + ",\n"
                 count += 1
                 continue
             if match2 != None:
-                go += "P," + "%.0f, %.0f,1, %s" % (Y, Z, obj_name) + ",\n"
+                go += "P," + "%.0f,%.0f,1,%s" % (Y, Z, obj_name) + ",\n"
                 count += 1
             else:
                 if match1 != None:
-                    go += "P," + "%.0f, %.0f,1, %s" % (Y, Z, obj_name) + ",y\n"
+                    go += "P," + "%.0f,%.0f,1,%s" % (Y, Z, obj_name) + ",y\n"
                     count += 1
                     continue
-                go += "P," + "%.0f, %.0f,1, %s" % (Y, Z, obj_name) + ",y\n"
+                go += "P," + "%.0f,%.0f,1,%s" % (Y, Z, obj_name) + ",y\n"
                 count += 1
 
         if (Y < X < Z) and ((X and Y >= min_detail_size and Z >= min_detail_size) or (
                 Y and X >= min_detail_size and Z >= min_detail_size) or (
                                     Z and X >= min_detail_size and Y >= min_detail_size)):
             if (match1 != None) and (match2 != None):
-                go += "P," + "%.0f, %.0f,1, %s" % (X, Z, obj_name) + ",\n"
+                go += "P," + "%.0f,%.0f,1,%s" % (X, Z, obj_name) + ",\n"
                 count += 1
                 continue
             if match2 != None:
-                result += "0; 1; " + mat_type + "%s; %s; %.0f; %.0f\n" % (mat_name, obj_name, X, Z)
-                go += "P," + "%.0f, %.0f,1, %s" % (Z, X, obj_name) + ",\n"
+                result += "0;1;" + mat_type + "%s;%s;%.0f;%.0f\n" % (mat_name, obj_name, X, Z)
+                go += "P," + "%.0f,%.0f,1,%s" % (Z, X, obj_name) + ",\n"
                 count += 1
             else:
                 if match1 != None:
-                    go += "P," + "%.0f, %.0f,1, %s" % (X, Z, obj_name) + ",y\n"
+                    go += "P," + "%.0f,%.0f,1,%s" % (X, Z, obj_name) + ",y\n"
                     count += 1
                     continue
-                go += "P," + "%.0f, %.0f,1, %s" % (Z, X, obj_name) + ",y\n"
+                go += "P," + "%.0f,%.0f,1,%s" % (Z, X, obj_name) + ",y\n"
                 count += 1
 
         if (Y < Z < X) and ((X and Y >= min_detail_size and Z >= min_detail_size) or (
                 Y and X >= min_detail_size and Z >= min_detail_size) or (
                                     Z and X >= min_detail_size and Y >= min_detail_size)):
             if (match1 != None) and (match2 != None):
-                go += "P," + "%.0f, %.0f,1, %s" % (Z, X, obj_name) + ",\n"
+                go += "P," + "%.0f,%.0f,1,%s" % (Z, X, obj_name) + ",\n"
                 count += 1
                 continue
             if match2 != None:
-                go += "P," + "%.0f, %.0f,1, %s" % (X, Z, obj_name) + ",\n"
+                go += "P," + "%.0f,%.0f,1,%s" % (X, Z, obj_name) + ",\n"
                 count += 1
             else:
                 if match1 != None:
-                    go += "P," + "%.0f, %.0f,1, %s" % (Z, X, obj_name) + ",y\n"
+                    go += "P," + "%.0f,%.0f,1,%s" % (Z, X, obj_name) + ",y\n"
                     count += 1
                     continue
-                go += "P," + "%.0f, %.0f,1, %s" % (X, Z, obj_name) + ",y\n"
+                go += "P," + "%.0f,%.0f,1,%s" % (X, Z, obj_name) + ",y\n"
                 count += 1
 
         if (Y < Z == X) and ((X and Y >= min_detail_size and Z >= min_detail_size) or (
                 Y and X >= min_detail_size and Z >= min_detail_size) or (
                                      Z and X >= min_detail_size and Y >= min_detail_size)):
             if (match1 != None) and (match2 != None):
-                go += "P," + "%.0f, %.0f,1, %s" % (X, Z, obj_name) + ",\n"
+                go += "P," + "%.0f,%.0f,1,%s" % (X, Z, obj_name) + ",\n"
                 count += 1
                 continue
             if match2 != None:
-                go += "P," + "%.0f, %.0f,1, %s" % (X, Z, obj_name) + ",\n"
+                go += "P," + "%.0f,%.0f,1,%s" % (X, Z, obj_name) + ",\n"
                 count += 1
             else:
                 if match1 != None:
-                    result += "1; 1; " + mat_type + "%s; %s; %.0f; %.0f\n" % (mat_name, obj_name, Z, X)
-                    go += "P," + "%.0f, %.0f,1, %s" % (X, Z, obj_name) + ",y\n"
+                    result += "1;1;" + mat_type + "%s;%s;%.0f;%.0f\n" % (mat_name, obj_name, Z, X)
+                    go += "P," + "%.0f,%.0f,1,%s" % (X, Z, obj_name) + ",y\n"
                     count += 1
                     continue
-                go += "P," + "%.0f, %.0f,1, %s" % (X, Z, obj_name) + ",y\n"
+                go += "P," + "%.0f,%.0f,1,%s" % (X, Z, obj_name) + ",y\n"
                 count += 1
 
         if (Z < X < Y) and ((X and Y >= min_detail_size and Z >= min_detail_size) or (
                 Y and X >= min_detail_size and Z >= min_detail_size) or (
                                     Z and X >= min_detail_size and Y >= min_detail_size)):
             if (match1 != None) and (match2 != None):
-                go += "P," + "%.0f, %.0f,1, %s" % (X, Y, obj_name) + ",\n"
+                go += "P," + "%.0f,%.0f,1,%s" % (X, Y, obj_name) + ",\n"
                 count += 1
                 continue
             if match2 != None:
-                go += "P," + "%.0f, %.0f,1, %s" % (Y, X, obj_name) + ",\n"
+                go += "P," + "%.0f,%.0f,1,%s" % (Y, X, obj_name) + ",\n"
                 count += 1
             else:
                 if match1 != None:
-                    go += "P," + "%.0f, %.0f,1, %s" % (X, Y, obj_name) + ",y\n"
+                    go += "P," + "%.0f,%.0f,1,%s" % (X, Y, obj_name) + ",y\n"
                     count += 1
                     continue
-                go += "P," + "%.0f, %.0f,1, %s" % (Y, X, obj_name) + ",y\n"
+                go += "P," + "%.0f,%.0f,1,%s" % (Y, X, obj_name) + ",y\n"
                 count += 1
 
         if (Z < Y < X) and ((X and Y >= min_detail_size and Z >= min_detail_size) or (
                 Y and X >= min_detail_size and Z >= min_detail_size) or (
                                     Z and X >= min_detail_size and Y >= min_detail_size)):
             if (match1 != None) and (match2 != None):
-                go += "P," + "%.0f, %.0f,1, %s" % (Y, X, obj_name) + ",\n"
+                go += "P," + "%.0f,%.0f,1,%s" % (Y, X, obj_name) + ",\n"
                 count += 1
                 continue
             if match2 != None:
-                go += "P," + "%.0f, %.0f,1, %s" % (X, Y, obj_name) + ",\n"
+                go += "P," + "%.0f,%.0f,1,%s" % (X, Y, obj_name) + ",\n"
                 count += 1
             else:
                 if match1 != None:
-                    go += "P," + "%.0f, %.0f,1, %s" % (Y, X, obj_name) + ",y\n"
+                    go += "P," + "%.0f,%.0f,1,%s" % (Y, X, obj_name) + ",y\n"
                     count += 1
                     continue
-                go += "P," + "%.0f, %.0f,1, %s" % (X, Y, obj_name) + ",y\n"
+                go += "P," + "%.0f,%.0f,1,%s" % (X, Y, obj_name) + ",y\n"
                 count += 1
 
         if (Z < Y == X) and ((X and Y >= min_detail_size and Z >= min_detail_size) or (
                 Y and X >= min_detail_size and Z >= min_detail_size) or (
                                      Z and X >= min_detail_size and Y >= min_detail_size)):
             if (match1 != None) and (match2 != None):
-                go += "P," + "%.0f, %.0f,1, %s" % (X, Y, obj_name) + ",\n"
+                go += "P," + "%.0f,%.0f,1,%s" % (X, Y, obj_name) + ",\n"
                 count += 1
                 continue
             if match2 != None:
-                go += "P," + "%.0f, %.0f,1, %s" % (X, Y, obj_name) + ",\n"
+                go += "P," + "%.0f,%.0f,1,%s" % (X, Y, obj_name) + ",\n"
                 count += 1
             else:
                 if match1 != None:
-                    go += "P," + "%.0f, %.0f,1, %s" % (X, Y, obj_name) + ",y\n"
+                    go += "P," + "%.0f,%.0f,1,%s" % (X, Y, obj_name) + ",y\n"
                     count += 1
                     continue
-                go += "P," + "%.0f, %.0f,1, %s" % (X, Y, obj_name) + ",\n"
+                go += "P," + "%.0f,%.0f,1,%s" % (X, Y, obj_name) + ",\n"
                 count += 1
 
     result_csv = 'N,Blender\n' + 'M,MDF\n' + '@,Length,Width,Quantity\n' + 'S,2750,1830,1000\n' + 'K,4\n' + '@,Length,Width,Quantity,Label,Can turn\n' + str(
@@ -617,8 +616,9 @@ class Reset_all(bpy.types.Operator):
 
     def execute(self, context):
         reset_all()
-        self.report({'INFO'}, 'This is %s' % self.bl_idname)
+        self.report({'INFO'}, f"This is {self.bl_idname}")
         return {'FINISHED'}
+
 
 class Rotate(bpy.types.Operator):
     bl_idname = "rotate.func"
@@ -626,7 +626,7 @@ class Rotate(bpy.types.Operator):
 
     def execute(self, context):
         rotate()
-        self.report({'INFO'}, 'This is %s' % self.bl_idname)
+        self.report({'INFO'}, f"This is {self.bl_idname}")
         return {'FINISHED'}
 
 
@@ -636,7 +636,7 @@ class Fix(bpy.types.Operator):
 
     def execute(self, context):
         fix()
-        self.report({'INFO'}, 'This is %s' % self.bl_idname)
+        self.report({'INFO'}, f"This is {self.bl_idname}")
         return {'FINISHED'}
 
 
@@ -646,7 +646,7 @@ class Remove_Unused_Slots(bpy.types.Operator):
 
     def execute(self, context):
         remove_unused_slots()
-        self.report({'INFO'}, 'This is %s' % self.bl_idname)
+        self.report({'INFO'}, f"This is {self.bl_idname}")
         return {'FINISHED'}
 
 
@@ -656,7 +656,7 @@ class Show_Name(bpy.types.Operator):
 
     def execute(self, context):
         show_name()
-        self.report({'INFO'}, 'This is %s' % self.bl_idname)
+        self.report({'INFO'}, f"This is {self.bl_idname}")
         return {'FINISHED'}
 
 
@@ -666,7 +666,7 @@ class Hide_Name(bpy.types.Operator):
 
     def execute(self, context):
         hide_name()
-        self.report({'INFO'}, 'This is %s' % self.bl_idname)
+        self.report({'INFO'}, f"This is {self.bl_idname}")
         return {'FINISHED'}
 
 
@@ -675,8 +675,9 @@ class Group_Rename(bpy.types.Operator):
     bl_label = "Group Rename"
     
     def execute(self, context):
+        #self.report({'WARNING'}, str("ERRRRor"))
         group_rename()
-        self.report({'INFO'}, 'This is %s' % self.bl_idname)
+        self.report({'INFO'}, f"This is {self.bl_idname}")
         return {'FINISHED'}
 
 
@@ -687,7 +688,7 @@ class Astra(bpy.types.Operator):
 
     def execute(self, context):
         astra()
-        self.report({'INFO'}, 'This is %s' % self.bl_idname)
+        self.report({'INFO'}, f"This is {self.bl_idname}")
         return {'FINISHED'}
 
 
@@ -698,8 +699,13 @@ class OptiCutter(bpy.types.Operator):
 
     def execute(self, context):
         opticutter()
-        self.report({'INFO'}, 'This is %s' % self.bl_idname)
+        self.report({'INFO'}, f"This is {self.bl_idname}")
         return {'FINISHED'}
+
+
+
+
+
 
 
 def rename_all():
@@ -715,8 +721,10 @@ class RenameSel(bpy.types.Operator):
 
     def execute(self, context):
         rename_all()
-        self.report({'INFO'}, 'This is %s' % self.bl_idname)
+        self.report({'INFO'}, f"This is {self.bl_idname}")
         return {'FINISHED'}
+
+
 
 
 class MyProperties(bpy.types.PropertyGroup):
@@ -748,6 +756,7 @@ class IV_Preferences(bpy.types.AddonPreferences):
         row.label(text="DATA ORDER PRIORITY: Rotate | Quantity | Material | Name | Thickness | Length | Width ")
 
 
+
 class EXAMPLE_PT_panel(bpy.types.Panel):
     bl_label = "ProCutter"
     bl_category = "Item"
@@ -777,8 +786,12 @@ class EXAMPLE_PT_panel(bpy.types.Panel):
         row.operator(Hide_Name.bl_idname, text='Hide names', icon='HIDE_ON')
         row.operator(Show_Name.bl_idname, text='Show names', icon='HIDE_OFF')
  
+
+
+
         row = layout.row()
    
+
         try:
             row.label(text="Change Material for Selected")
             row = layout.row()
@@ -798,10 +811,12 @@ class EXAMPLE_PT_panel(bpy.types.Panel):
         mytool = scene.rename_all
         layout.prop(mytool, "rename_sel")
         
+        
         row.label(text="Rename Selected Objects")
         row = layout.row()
         row.operator(RenameSel.bl_idname, text='Rename Selected', icon='SORTALPHA')
         row.scale_y = 1.3
+        
         
         row = layout.row()
         row = layout.row()
